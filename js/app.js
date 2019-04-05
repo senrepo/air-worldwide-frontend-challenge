@@ -4,7 +4,11 @@ $(document).ready(function () {
     var $uploadPage = $(doc.getElementById('uploadPage')),
         $historyPage = $(doc.getElementById('historyPage')),
         $uploadContainer = $(doc.getElementById('uploadContainer')),
-        $historyContainer = $(doc.getElementById('historyContainer'));
+        $historyContainer = $(doc.getElementById('historyContainer')),
+        $browseButton = $(doc.getElementById('browseButton')),
+        $uploadButton = $(doc.getElementById('uploadButton')),
+        $fileModal =  $(doc.getElementById('fileModal'));
+
 
     var toggleMenu = function (menu) {
         switch (menu) {
@@ -32,6 +36,13 @@ $(document).ready(function () {
     $historyPage.click(function (e) {
         e.preventDefault();
         toggleMenu("history");
+    });
+
+    $browseButton.click(function (e) {
+        e.preventDefault();
+        var tree = new treeComponent($fileModal);
+        tree.show();
+
     });
 
 
