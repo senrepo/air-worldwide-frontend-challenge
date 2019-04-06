@@ -5,41 +5,53 @@ var treeComponent = function ($ctrl) {
         return fileArray;
     }
 
-    var buildFileObject = function (files) {
-        var fileObject = {};
+    var buildRowText = function (files) {
+        var rows = [];
 
         for (var i = 0, ilen = files.length; i < ilen; i++) {
             var file = files[i];
             var parts = file.split("/");
 
-            for (var j = 0, jlen = parts.length; j < jlen; j++) {
-                var part = parts[j];
-                var parent = parts[j-1] ? parts[j-1] : "";
-                var level = (j + 1).toString();
-                if (!fileObject[level]) fileObject[(j + 1).toString()] = {};
-                if(part) fileObject[level][part] = { "type" : (j === (jlen - 1)) ? "file" : "dir", "parent" : parent };
+            for (var j = 0, jlen = rows.length; j < jlen; j++) {
+                var rowParts = rows[j];
 
+                for (var k = 0; k < rowParts.length; k++) {
+                    if (rowParts[k] === parts[k]) parts[k] = "";
+                }
             }
+            rows.push(parts);
         }
-        return fileObject;
+        return rows;
     }
 
-    var buildTable = function () {
-        var files = getFiles();
-        var fileObject = buildFileObject(files);
+    var buildRow = function (data, colCount) {
+        var row = "<tr>";
+        for (var i = 0; i < colCount; i++) {
+            row += "<td>";
+            if(data[i]) row += data[i];
+            row += "</td>";
+        }
+        row += "</tr>";
+        return row;
+    }
 
-        var columCount = Object.keys(fileObject).length;
-
-        
-    
-
-        console.log(JSON.stringify(fileObject));
-
+    var buildTable = function (rows, cols) {
+        var table = "<table>"
+        for (var row in rows) {
+            var row = buildRow(rows[row], cols);
+            table += row;
+        }
+        table += "</table>";
+        return table;
     }
 
     var render = function () {
-        buildTable();
-        $body.html("hello");
+        var files = getFiles();
+        var rowsArr = buildRowText(files);
+        var totalCols = 0;
+        for (var rowArr in rowsArr) totalCols = rowsArr[rowArr].length > totalCols ? rowsArr[rowArr].length : totalCols;
+        var table = buildTable(rowsArr,totalCols);
+        $body.html(table);
     };
 
     var show = function () {
