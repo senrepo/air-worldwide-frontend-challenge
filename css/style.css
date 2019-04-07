@@ -3,8 +3,12 @@
         width: 100%;
     }
 
-    span .selected {
-        background-color: rgb(14, 163, 212) !important;
-    }
+    .marginTop2 {
+        margin-top: 2em !important;
+      }
+
+      .marginTop1 {
+        margin-top: 1em !important;
+      }
 
  }

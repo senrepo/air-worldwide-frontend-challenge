@@ -1,3 +1,4 @@
+//TODO: use the namespace if needed
 var treeComponent = function ($ctrl) {
     var $body = $ctrl.find(".modal-body");
 
@@ -6,14 +7,14 @@ var treeComponent = function ($ctrl) {
     };
 
     var buildRowsArray = function (files) {
-        var rows = [];
+        var rows = [], file, parts, rowParts;
 
         for (var i = 0, ilen = files.length; i < ilen; i++) {
-            var file = files[i];
-            var parts = file.split("/");
+            file = files[i];
+            parts = file.split("/");
 
             for (var j = 0, jlen = rows.length; j < jlen; j++) {
-                var rowParts = rows[j];
+                rowParts = rows[j];
 
                 for (var k = 0; k < rowParts.length; k++) {
                     if (rowParts[k] === parts[k]) parts[k] = "";
@@ -39,11 +40,11 @@ var treeComponent = function ($ctrl) {
     };
 
     var buildRowsHtml = function (data, colCount) {
-        var rows = [];
+        var rows = [], type, row;
         for (var i = 0; i < data.length; i++) {
             if (data[i]) {
-                var type = (i === (data.length - 1)) ? "file" : "dir";
-                var row = buildRowHtml(data[i], type, i, colCount);
+                type = (i === (data.length - 1)) ? "file" : "dir";
+                row = buildRowHtml(data[i], type, i, colCount);
                 rows.push(row);
             }
         }
@@ -51,9 +52,9 @@ var treeComponent = function ($ctrl) {
     };
 
     var buildTable = function (rows, cols) {
-        var table = "<table>"
+        var table = "<table>", rowsText;
         for (var row in rows) {
-            var rowsText = buildRowsHtml(rows[row], cols);
+            rowsText = buildRowsHtml(rows[row], cols);
             table += rowsText;
         }
         table += "</table>";
@@ -61,11 +62,13 @@ var treeComponent = function ($ctrl) {
     };
 
     var render = function () {
-        var files = getFiles();
-        var rowsArray = buildRowsArray(files);
-        var totalCols = 0;
+        var files = getFiles(),
+            rowsArray = buildRowsArray(files),
+            totalCols = 0,
+            table;
+
         for (var rowArr in rowsArray) totalCols = rowsArray[rowArr].length > totalCols ? rowsArray[rowArr].length : totalCols;
-        var table = buildTable(rowsArray, totalCols);
+        table = buildTable(rowsArray, totalCols);
         $body.html(table);
     };
 

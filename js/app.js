@@ -13,6 +13,8 @@ $(document).ready(function () {
         $fileModal = $(doc.getElementById('fileModal')),
         $fileInput = $(doc.getElementById('fileInput')),
         $progressbar = $(doc.getElementById('progressbar')),
+        $bar = $progressbar.find(".progress-bar"),
+        $alertMessage = $(doc.getElementById('alertMessage')),
         treeComp = new treeComponent($fileModal),
         historyComp = new historyComponant($historyTable),
         history = [];
@@ -58,27 +60,37 @@ $(document).ready(function () {
         treeComp.show();
     });
 
+    var showProgress = function (i) {
+        var val = i * 20;
+        $bar.css('width', val + '%').attr('aria-valuenow', val);
+    }
+
     $uploadButton.click(function (e) {
         e.preventDefault();
-        var $bar = $progressbar.find("progress-bar");
 
         var file = $fileInput.val();
         if (!file) {
-            alert("file input is empty, please click browse button to select a file");
+            $alertMessage.show();
             return;
         }
 
-        setTimeout(function () {
-            $progressbar.hide();
-        }, (5 * 1000));
+        for (var i = 1; i <= 5; i++) {
+            setTimeout(showProgress.bind(null, i), 1000);
+        }
 
         $progressbar.show();
+
+        setTimeout(function() {
+            $progressbar.hide();
+            $bar.css('width', '0%').attr('aria-valuenow', 0);
+        }, 5000);
 
         history.push($fileInput.val());
     });
 
     $fileModal.on("click", ".btn-primary", function (e) {
         e.preventDefault();
+        $alertMessage.hide();
         $fileInput.val(currentFile);
         treeComp.ok();
     });
@@ -86,6 +98,11 @@ $(document).ready(function () {
     $fileModal.on("click", ".file", function (e) {
         e.preventDefault();
         var $ctrl = $(e.target);
+
+        //TODO: externalize the styles to css file
+        $fileModal.find(".selected").css("background-color", "white");
+        $ctrl.addClass("selected");
+        $ctrl.css("background-color", "lightblue")
 
         var $row = $ctrl.closest("tr");
         var level = $row.attr("data-level");
@@ -102,7 +119,7 @@ $(document).ready(function () {
                 $row = $row.prev("tr");
                 plevel = $row.attr("data-level");
             }
-            
+
         }
         currentFile = filePath;
     });
@@ -111,6 +128,7 @@ $(document).ready(function () {
         $progressbar.hide();
         toggleMenu("upload");
         $fileInput.prop('disabled', true);
+        $alertMessage.hide();
     }
 
     init();
