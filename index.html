@@ -46,10 +46,26 @@
           <button type="button" class="btn btn-primary" id="uploadButton">upload</button>
         </div>
       </div>
+      <div class="row">
+        <div class="col-12">
+          <div class="progress" id="progressbar">
+            <div class="progress-bar progress-bar-striped" role="progressbar" style="width: 60%" aria-valuenow="10"
+              aria-valuemin="0" aria-valuemax="100"></div>
+          </div>
+        </div>
+      </div>
     </div>
 
     <div class="container" id="historyContainer">
-      history page contents
+      <div class="row">
+        <div class="col-12" id="historyTable">
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <button type="button" class="btn btn-primary" id="clearHistoryButton">Clear</button>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -65,7 +81,6 @@
           </button>
         </div>
         <div class="modal-body">
-          ...
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-primary">ok</button>
@@ -89,7 +104,7 @@
     </script>
 
   <script type="text/javascript" src="js/file.js"></script>
-  <script type="text/javascript" src="js/tree.js"></script>
+  <script type="text/javascript" src="js/component.js"></script>
   <script type="text/javascript" src="js/app.js"></script>
 
 </body>
