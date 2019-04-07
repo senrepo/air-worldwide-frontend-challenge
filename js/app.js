@@ -14,6 +14,7 @@ $(document).ready(function () {
         $fileInput = $(doc.getElementById('fileInput')),
         $progressbar = $(doc.getElementById('progressbar')),
         $bar = $progressbar.find(".progress-bar"),
+        $uploadLabel = $(doc.getElementById("uploadLabel")),
         $alertMessage = $(doc.getElementById('alertMessage')),
         treeComp = new treeComponent($fileModal),
         historyComp = new historyComponant($historyTable),
@@ -53,6 +54,7 @@ $(document).ready(function () {
         e.preventDefault();
         history = [];
         historyComp.clear();
+        $uploadLabel.hide();
     });
 
     $browseButton.click(function (e) {
@@ -63,7 +65,7 @@ $(document).ready(function () {
     var showProgress = function (i) {
         var val = i * 20;
         $bar.css('width', val + '%').attr('aria-valuenow', val);
-    }
+    };
 
     $uploadButton.click(function (e) {
         e.preventDefault();
@@ -74,6 +76,7 @@ $(document).ready(function () {
             return;
         }
 
+        $uploadLabel.hide();
         for (var i = 1; i <= 5; i++) {
             setTimeout(showProgress.bind(null, i), 1000);
         }
@@ -83,6 +86,7 @@ $(document).ready(function () {
         setTimeout(function() {
             $progressbar.hide();
             $bar.css('width', '0%').attr('aria-valuenow', 0);
+            $uploadLabel.show();
         }, 5000);
 
         history.push($fileInput.val());
@@ -92,6 +96,7 @@ $(document).ready(function () {
         e.preventDefault();
         $alertMessage.hide();
         $fileInput.val(currentFile);
+        $uploadLabel.hide();
         treeComp.ok();
     });
 
@@ -129,6 +134,7 @@ $(document).ready(function () {
         toggleMenu("upload");
         $fileInput.prop('disabled', true);
         $alertMessage.hide();
+        $uploadLabel.hide();
     }
 
     init();
